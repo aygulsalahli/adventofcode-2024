@@ -1,8 +1,3 @@
-import os
-print(os.getcwd())
-
-
-
 with open("input") as f:
 
     reports = f.readlines()
