@@ -1,5 +1,3 @@
-rules = []
-
 class Node:
     def __init__(self, value):
         self.value = value
@@ -21,6 +19,7 @@ class Node:
     def __eq__(self, other):
         return self.value == other.value
 
+
 class Order:
     def __init__(self, rules):
         self.rules = rules
@@ -29,7 +28,7 @@ class Order:
 
     def _generate_nodes(self):
         for rule in self.rules:
-            rule = rule.strip().split('|')
+            rule = rule.strip().split("|")
             first = rule[0]
             second = rule[1]
 
@@ -42,48 +41,41 @@ class Order:
             self.nodes[second].add_before(self.nodes[first])
 
 
-with open('input') as f:
+rules = []
+with open("input") as f:
     lines = f.readlines()
     updates = []
     for line in lines:
-        if line == '\n':
+        if line == "\n":
             continue
-        if '|' in line:
+        if "|" in line:
             rules.append(line)
-        else :
+        else:
             updates.append(line)
 
 order = Order(rules)
 
 correct_updates = []
 for update in updates:
-    update = update.strip().split(',')
+    update = update.strip().split(",")
 
     in_order = True
 
     for i in range(len(update)):
         node = order.nodes.get(update[i])
-        if node is None:
-            raise Exception(f"Node {update[i]} not found")
 
         for n in range(i + 1, len(update)):
             node_after = order.nodes.get(update[n])
-            if node_after is None:
-                raise Exception(f"Node {update[n]} not found")
             if node_after not in node.nodes_after:
                 in_order = False
                 break
 
     if in_order:
         correct_updates.append(update)
+
 sum = 0
 for update in correct_updates:
     mid = len(update) // 2
     sum += int(update[mid])
 
 print(sum)
-
-
-
-
-
